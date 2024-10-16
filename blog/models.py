@@ -1,8 +1,12 @@
 from django.conf import settings
 from django.db import models
-from django.urls import reverse
 from django.utils import timezone
 
+
+class PublishedManager(models.Manager):
+    """Custom manager to filter published posts."""
+    def get_queryset(self):
+        return super().get_queryset().filter(status=BlogPost.Status.PUBLISHED)
 
 
 
@@ -16,10 +20,8 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-    
-    
 
-    
+
 
 class BlogPost(models.Model):
     """Main Post model for blog posts."""
@@ -53,7 +55,11 @@ class BlogPost(models.Model):
     meta_title = models.CharField(max_length=150, null=True, blank=True)
     meta_description = models.TextField(max_length=300, null=True, blank=True)
     excerpt = models.TextField(max_length=500, null=True, blank=True)
-    
+
+
+    # Managers
+    objects = models.Manager()  # The default manager.
+    published = PublishedManager()  # Custom manager to get published posts.
 
 
     class Meta:
