@@ -1,0 +1,244 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <title>{% block title %}{% endblock title %}</title>
+</head>
+<body>
+
+  <header>
+    <!-- Top Navbar (Main with Search Bar, Cart, Profile) -->
+    <nav class="navbar navbar-expand-lg shadow-sm" id="top-nav">
+      <div class="container-fluid">
+        <!-- Brand/Logo -->
+        <a class="navbar-brand" href="index.html">
+          LuxeEssence Clinic
+        </a>
+  
+        <!-- Toggler button for the top navbar (mobile) -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNavbar" aria-controls="topNavbar" aria-expanded="false" aria-label="Toggle navigation" id="toggle-btn">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <!-- Collapsible content for the top navbar -->
+        <div class="collapse navbar-collapse" id="topNavbar">
+          <!-- Centered Search Bar -->
+          <form class="d-flex mx-auto w-20 w-md-10">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-secondary" type="submit">Search</button>
+          </form>
+        <!-- Social Media Icons -->
+        <div class="d-flex ms-3 ">
+          <span class="fa-stack me-2">
+            <a href="#">
+              <i class="fas fa-circle fa-stack-2x"></i>
+              <i class="fab fa-facebook-f fa-stack-1x text-white"></i>
+            </a>
+          </span>
+          <span class="fa-stack">
+            <a href="#">
+              <i class="fas fa-circle fa-stack-2x"></i>
+              <i class="fab fa-twitter fa-stack-1x text-white"></i>
+            </a>
+          </span>
+        </div>
+          <!-- Right side icons (Cart, User) -->
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item ">
+              <a class="nav-link" href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="#"><i class="fas fa-user"></i></a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="login.html">Login</a></li>
+                <li><a class="dropdown-item" href="logout.html">Logout</a></li>
+                <li><a class="dropdown-item" href="dashboard.html">Dashboard</a></li>
+                </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  
+    <!-- Bottom Navbar (Categories, Bestsellers, etc.) -->
+    <nav class="navbar navbar-expand-lg shadow-sm " id="bottom-nav">
+      <div class="container-fluid">
+        <!-- Toggler button for the bottom navbar (mobile) -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#bottomNavbar" aria-controls="bottomNavbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <!-- Collapsible content for the bottom navbar -->
+        <div class="collapse navbar-collapse" id="bottomNavbar">
+          <ul class="navbar-nav">
+        <!-- Home -->
+        <li class="nav-item">
+          <a href="index.html" class="nav-link fw-semibold">Home</a>
+        </li>
+
+        <!-- Shop with Categories Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="shop.html" id="shopDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Shop
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="shopDropdown">
+            <li><a class="dropdown-item" href="shop.html?category=skincare">Skincare</a></li>
+            <li><a class="dropdown-item" href="shop.html?category=serums">Serums</a></li>
+            <li><a class="dropdown-item" href="shop.html?category=beauty-tools">Beauty Tools</a></li>
+            <li><a class="dropdown-item" href="shop.html?category=cleansers">Cleansers</a></li>
+          </ul>
+        </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about1.html">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="blog.html">Blog</a>
+            </li>
+          </ul>
+  
+          <!-- Right-side button -->
+          <button class="btn btn-outline-primary ms-auto" type="button">
+            <a href="booking.html" class="nav-link fw-semibold">Make an appointment</a>
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+  
+  
+  
+  <section id="hero" class="hero-section pt-6">
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item text-black active">
+          <img src="{% static 'images/home/slide-1.png' %}" class="d-block w-100" alt="Skincare Hero">
+          <div class="carousel-caption">
+            <h1>Glow with LuxeEssence</h1>
+            <p>Discover our latest skincare collection</p>
+            <a href="shop.html" class="btn btn-primary">Shop Now</a>
+          </div>
+        </div>
+        <div class="carousel-item text-black">
+          <img src="{% static 'images/home/slide-2.png' %}" class="d-block w-100" alt="Skincare Hero">
+          <div class="carousel-caption">
+            <h1>Glow Series - New Collection</h1>
+            <p>Discover Our Latest Products for a Radiant Glow</p>
+            <a href="shop.html" class="btn btn-primary">Explore the Collection</a>
+          </div>
+        </div>
+      </div>
+      <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      </a>
+      <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      </a>
+    </div>
+  </section>
+  
+  
+
+
+
+
+{% block content %}
+  
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+<footer class="footer bg-dark text-white py-4">
+  <div class="container">
+    <div class="row justify-content-between">
+      <!-- Logo and About Us -->
+      <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="footer-logo mb-3">
+          <a href="index.html" class="text-white fs-4">LuxeEssence Clinic</a>
+        </div>
+        <p class="text-light">
+          LuxeEssence Clinic provides premium skincare products designed to bring out your natural glow. We focus on quality and results-driven formulas that leave your skin feeling nourished and radiant.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-6 col-md-3 col-lg-2 mb-4">
+        <h5 class="text-uppercase">Information</h5>
+        <ul class="footer-menu list-unstyled">
+          <li><a href="about1.html" class="text-light">About Us</a></li>
+          <li><a href="contact.html" class="text-light">Contact Us</a></li>
+          <li><a href="services.html" class="text-light">Services</a></li>
+          <li><a href="fqa.html" class="text-light">FQA</a></li>
+          <li><a href="refund-policy.html" class="text-light">Refund Policy</a></li>
+        </ul>
+      </div>
+
+      <!-- Account Links -->
+      <div class="col-6 col-md-3 col-lg-2 mb-4">
+        <h5 class="text-uppercase">Account</h5>
+        <ul class="footer-menu list-unstyled">
+          <li><a href="login.html" class="text-light">Login-Register</a></li>
+          <li><a href="dashboard.html" class="text-light">My Account</a></li>
+          <li><a href="booking.html" class="text-light">Make An Appointment</a></li>
+
+        </ul>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <h5 class="text-uppercase">Stay in the Loop</h5>
+        <p class="text-light mb-3">Subscribe to our newsletter for the latest updates on new arrivals and special offers.</p>
+        <form class="newsletter-form d-flex" action="#" method="post">
+          <input class="form-control me-2" type="email" placeholder="Enter your email" required>
+          <button class="btn btn-primary" type="submit">Sign Up</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Social Media and Copyright -->
+    <div class="row align-items-center pt-4 mt-4 border-top">
+      <div class="col-md-6 col-lg-4 text-center text-md-start mb-3 mb-md-0">
+        <p>&copy; 2024 LuxeEssence. All Rights Reserved.</p>
+      </div>
+      <div class="col-md-6 col-lg-4 text-center">
+        <ul class="social-icons list-unstyled d-flex justify-content-center mb-0">
+          <li class="me-3"><a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a></li>
+          <li class="me-3"><a href="#" class="text-white"><i class="fab fa-twitter"></i></a></li>
+          <li class="me-3"><a href="#" class="text-white"><i class="fab fa-instagram"></i></a></li>
+          <li class="me-3"><a href="#" class="text-white"><i class="fab fa-pinterest"></i></a></li>
+        </ul>
+      </div>
+      <div class="col-md-12 col-lg-4 text-center text-lg-end">
+        <img src="{% static 'images/1.webp' %}" alt="Payment Methods" class="img-fluid">
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>

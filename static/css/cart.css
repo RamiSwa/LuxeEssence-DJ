@@ -1,0 +1,38 @@
+.cart-section h3.title,
+.checkout-section h3.title {
+  font-weight: bold;
+  text-transform: capitalize;
+  color: #333;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+}
+
+.product-quantity .count-btn {
+  margin-left: 5px;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.checkout-section .form-control {
+  height: 45px;
+  border-radius: 0.25rem;
+}
+
+.checkout-section .btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 0.25rem;
+}
+
+.order-summary .list-group-item {
+  border: none;
+}
+
+.order-summary .list-group-item:last-child {
+  font-size: 1.25rem;
+  color: #333;
+}

@@ -1,0 +1,347 @@
+.product-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    height: 100%; // Ensures all cards are of equal height
+
+    &:hover {
+        transform: translateY(-5px); // Adds subtle hover effect
+    }
+
+    .product-thumbnail {
+        position: relative;
+        padding-top: 100%; // Forces a square aspect ratio for all product images
+        overflow: hidden;
+
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; // Ensures images maintain their aspect ratio and don't distort
+        }
+
+        .badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 12px;
+            background-color: #ff6f61;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+    }
+
+    .product-desc {
+        padding: 15px;
+        flex-grow: 1; // Ensures content grows to fill available space
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .star-rating {
+            text-align: center;
+            color: #f9d71c;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+
+            .del {
+                font-size: 14px;
+                color: #888;
+                margin-right: 5px;
+                text-decoration: line-through;
+            }
+
+            .onsale {
+                color: #ff6f61;
+            }
+        }
+    }
+
+    .actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+
+        .action {
+            margin: 0 5px;
+            color: #666;
+            font-size: 18px;
+
+            &:hover {
+                color: #ff6f61;
+            }
+
+            .icon-heart,
+            .icon-shuffle,
+            .icon-magnifier {
+                font-size: 20px;
+            }
+        }
+    }
+
+    .pro-btn {
+        width: 40px;
+        height: 40px;
+        background-color: #ff6f61;
+        border: none;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: #e65550;
+        }
+    }
+}
+
+// Ensure that all images within cards have consistent dimensions
+.product-thumbnail img {
+    width: 100%;
+    height: auto;
+    object-fit: cover; // This keeps the aspect ratio of the images intact without stretching
+}
+
+
+.star-rating {
+    text-align: center;
+    color: #f9d71c;
+    margin-bottom: 10px;
+}
+
+.pro-btn {
+    width: 40px;
+    height: 40px;
+    background-color: #ff6f61;
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #e65550;
+    }
+}
+
+
+/* Set a uniform height for image containers */
+.list-view .product-image {
+    height: 150px;
+    /* You can adjust the height as needed */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f8f8;
+    /* Optional: Adds a light background behind images */
+}
+
+/* Ensure all images fit within the container and maintain aspect ratio */
+.list-view img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    /* Ensures the images are scaled and centered properly */
+}
+
+/* Styling for the product row */
+.list-view .row {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+
+/* Ensure the dropdown fits within the container and is responsive */
+.shop-grid-button .form-select {
+    max-width: 100%;
+    /* Ensures it stays within its container */
+    width: auto;
+}
+
+/* Fixing overflow issue */
+select.form-select {
+    max-width: 100%;
+    /* Prevents dropdown from exceeding screen size */
+    position: relative;
+    /* Keeps it within container bounds */
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 576px) {
+    .shop-grid-button {
+        flex-direction: column;
+        /* Stack elements vertically on mobile */
+        align-items: flex-start;
+    }
+
+    .shop-grid-button .form-select {
+        width: 100%;
+        /* Ensure dropdown is full width on mobile */
+    }
+
+    .shop-grid-button .sort-by {
+        margin-bottom: 5px;
+        /* Adds space between label and select on small screens */
+    }
+}
+
+/* Optional: Ensure dropdown menu doesn't overflow off the screen */
+select.form-select:focus {
+    outline: none;
+    width: 100%;
+    /* When opened, dropdown fits within the screen */
+}
+
+
+/* Remove spinner arrows for Webkit browsers like Chrome, Safari, etc. */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Remove spinner arrows for Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+
+/* Product Description Tab */
+.product-tab .single-product-desc p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* Product Details List */
+.product-details-list {
+    list-style: none;
+    padding: 0;
+    font-size: 1rem;
+}
+
+.product-details-list li {
+    margin-bottom: 10px;
+}
+
+.product-details-list li strong {
+    color: #333;
+}
+
+/* Review Section */
+.review-wrapper .single-review,
+.child-review {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.review-wrapper .single-review .review-img img,
+.child-review .review-img img {
+    border-radius: 50%;
+}
+
+/* Review Form */
+.review-form-wrapper {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.review-form-wrapper input,
+.review-form-wrapper textarea {
+    margin-bottom: 15px;
+}
+
+.review-form-wrapper .star-rating .fa-star {
+    color: #ffc107;
+}
+
+
+
+// You might also like section
+
+/* Custom slider styles */
+.slick-prev, .slick-next, .fa-chevron-left {
+    background-color: #fe6b2a;
+    border-radius: 50%;
+    border: 1px solid #fe6b2a;
+    padding: 5px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slick-prev:hover, .slick-next:hover {
+    background-color: #fe6b2a;
+}
+
+.slick-prev:before, .slick-next:before {
+    font-size: 20px;
+    color: #fe6b2a;
+}
+
+.slick-list {
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.slick-track {
+    display: flex;
+    align-items: center;
+}
+
+.slick-slide {
+    margin: 0 10px;
+}
+
+
+
+.product-thumb img {
+    max-width: 100%;
+    height: auto;
+}
+
+.product-sync-nav .slick-slide {
+    margin: 0 10px;
+}
+
+.slick-slide img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+

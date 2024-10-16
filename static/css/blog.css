@@ -1,0 +1,99 @@
+.search-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.form-control {
+  padding-right: 2.5rem;
+  /* Adjust this for space between the text and button */
+}
+
+.btn-outline-primary {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+.tag-cloud a {
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.tag-cloud a:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Vertical line style */
+.reply-wrapper {
+  display: flex;
+  position: relative;
+}
+
+.line-connector {
+  position: relative;
+  width: 30px;
+  /* Width of the margin where the line will go */
+}
+
+.vertical-line {
+  border-left: 2px solid #007bff;
+  /* Color and thickness of the line */
+  height: 100%;
+  /* Full height of the comment */
+  margin-left: 15px;
+  /* Center the line */
+}
+
+.hover-animation {
+  position: relative;
+  /* Ensure pseudo-elements position correctly */
+}
+
+.hover-animation a {
+  position: relative;
+  /* Ensure pseudo-elements position correctly */
+}
+
+.hover-animation a::before,
+.hover-animation a::after {
+  position: absolute;
+  content: "";
+  background: #fe6b2a;
+  opacity: 1;
+  transition: all 0.9s linear;
+  /* Transition effect */
+}
+
+/* Before pseudo-element positioning */
+.hover-animation a::before {
+  top: 0;
+  left: 50%;
+  right: 51%;
+  bottom: 0;
+}
+
+/* After pseudo-element positioning */
+.hover-animation a::after {
+  top: 50%;
+  left: 0;
+  right: 0;
+  bottom: 50%;
+}
+
+/* Hover state */
+.hover-animation:hover a::before {
+  left: 0;
+  right: 0;
+  opacity: 0;
+  /* Fades out on hover */
+}
+
+.hover-animation:hover a::after {
+  top: 0;
+  bottom: 0;
+  opacity: 0;
+  /* Fades out on hover */
+}

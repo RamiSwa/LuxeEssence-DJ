@@ -1,0 +1,44 @@
+// Fonts
+$font-family-sans-serif: 'Poppins',
+sans-serif;
+
+// Colors
+$primary: #fe6b2a;
+$secondary: #35353a;
+$body-bg: #f7f1e3;
+$body-color: #35353a;
+$navbar-bg: #ffffff;
+
+// Navbar Styles
+$navbar-dark-color: #35353a;
+$navbar-light-color: $primary;
+
+// Buttons
+$button-radius: 50px;
+$btn-primary-bg: $primary;
+$btn-primary-color: #fff;
+$btn-primary-hover-bg: darken($primary, 10%);
+$btn-outline-primary-color: $primary;
+
+// Search Bar Inputs
+$input-border-radius: 5px;
+$input-border-color: #ddd;
+$input-focus-border-color: $primary;
+
+
+// Spacing
+$spacer: 1rem !default;
+$spacers: (0: 0,
+    1: $spacer * 0.25,
+    2: $spacer * 0.5,
+    3: $spacer,
+    4: $spacer * 1.5,
+    5: $spacer * 3,
+    6: $spacer * 6,
+    7: $spacer * 8,
+    8: $spacer * 12,
+) !default;
+
+
+// Import Bootstrap SCSS
+@import '../node_modules/bootstrap/scss/bootstrap';
