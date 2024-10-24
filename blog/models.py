@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 
 
@@ -71,5 +72,38 @@ class BlogPost(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse(
+        'blog:blog_detail',
+        args=[self.publish.year,
+                self.publish.month,
+                self.publish.day,
+                self.slug]
+)
 
 
+
+
+class Comment(models.Model):
+    """Model for blog comments."""
+    blog_post = models.ForeignKey(BlogPost, on_delete=models.CASCADE, related_name='comments')
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
+    author = models.CharField(max_length=80)
+    email = models.EmailField()
+    body = models.TextField()
+    created = models.DateTimeField(default=timezone.now)
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['created']
+
+        indexes = [
+            models.Index(fields=['created']),
+        ]
+        
+    def __str__(self):
+        return f'Comment by {self.author}'
+
+    def is_reply(self):
+        """Check if a comment is a reply to another comment."""
+        return self.parent is not None

@@ -1,0 +1,108 @@
+<div class="pagination">
+    <span class="step-links">
+      {% if page.has_previous %}
+        <a href="?page={{ page.previous_page_number }}">Previous</a>
+      {% endif %}
+      <span class="current">
+        Page {{ page.number }} of {{ page.paginator.num_pages }}.
+      </span>
+      {% if page.has_next %}
+        <a href="?page={{ page.next_page_number }}">Next</a>
+      {% endif %}
+    </span>
+  </div>
+
+
+  <nav class="pagination-section mt-4">
+    <ul class="pagination justify-content-center">
+        {% if posts.has_previous %}
+            <li class="page-item">
+                <a class="page-link border-0 shadow-sm" href="?page={{ posts.previous_page_number }}">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link border-0 shadow-sm"><i class="fas fa-chevron-left"></i></a>
+            </li>
+        {% endif %}
+        
+        <!-- Loop through the available page numbers -->
+        {% for num in posts.paginator.page_range %}
+            {% if posts.number == num %}
+                <li class="page-item active">
+                    <a class="page-link border-0 shadow-sm bg-primary text-white">{{ num }}</a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link border-0 shadow-sm" href="?page={{ num }}">{{ num }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+        
+        {% if posts.has_next %}
+            <li class="page-item">
+                <a class="page-link border-0 shadow-sm" href="?page={{ posts.next_page_number }}">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link border-0 shadow-sm"><i class="fas fa-chevron-right"></i></a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+
+  <nav class="pagination-section mt-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <a class="page-link border-0 shadow-sm" href="#"><i class="fas fa-chevron-left"></i></a> <!-- Left Chevron -->
+      </li>
+      <li class="page-item active">
+        <a class="page-link border-0 shadow-sm bg-primary text-white" href="#">1</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link border-0 shadow-sm" href="#">2</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link border-0 shadow-sm" href="#"><i class="fas fa-chevron-right"></i></a> <!-- Right Chevron -->
+      </li>
+    </ul>
+  </nav>
+
+
+  <nav class="pagination-section mt-4">
+    <ul class="pagination justify-content-center">
+        <!-- Show previous button only if there is a previous page -->
+        {% if posts.has_previous %}
+            <li class="page-item">
+                <a class="page-link border-0 shadow-sm" href="?page={{ posts.previous_page_number }}">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            </li>
+        {% endif %}
+        
+        <!-- Loop through the available page numbers -->
+        {% for num in posts.paginator.page_range %}
+            {% if posts.number == num %}
+                <li class="page-item active">
+                    <a class="page-link border-0 shadow-sm bg-primary text-white">{{ num }}</a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link border-0 shadow-sm" href="?page={{ num }}">{{ num }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+        
+        <!-- Show next button only if there is a next page -->
+        {% if posts.has_next %}
+            <li class="page-item">
+                <a class="page-link border-0 shadow-sm" href="?page={{ posts.next_page_number }}">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>

@@ -1,0 +1,11 @@
+  <!-- Comment Form -->
+  {% load crispy_forms_tags %}
+  <div class="blog-comment-form mt-5 p-5 ">
+    <h2 class="comment-heading mb-4">Leave a comment</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form|crispy }}
+        <input type="hidden" name="parent_id" id="parent_id">
+        <button type="submit" class="btn btn-primary px-5 py-2">Submit</button>
+    </form>
+</div>
