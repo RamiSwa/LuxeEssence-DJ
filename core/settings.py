@@ -38,11 +38,34 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog.apps.BlogConfig',
-    
+    'django.contrib.postgres',
+
+    # Other installed apps
+    'ckeditor',
+    'ckeditor_uploader',  # Optional, for image/file uploads
     'crispy_forms',
     'crispy_bootstrap5',  # If you're using Bootstrap 5
+    'taggit',
+    
+    'blog.apps.BlogConfig',
+
+
+    
+
 ]
+
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',  # Options: 'full', 'basic', or custom
+        'height': 300,
+        'width': '100%',
+        'extraPlugins': ','.join(['blockquote']),  # Add extra plugins if needed
+        'removePlugins': 'stylesheetparser',
+        'allowedContent': True,  # Allows full HTML
+    },
+}
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
@@ -78,16 +101,27 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 
 
+
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('PORT')
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

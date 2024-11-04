@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import BlogPost, Category, Comment
+from .models import BlogPost, Category, Comment, Banner
 
 
 
@@ -31,3 +31,12 @@ class CommentAdmin(admin.ModelAdmin):
 
     def approve_comments(self, request, queryset):
         queryset.update(active=True)
+        
+        
+
+
+@admin.register(Banner)
+class BannerAdmin(admin.ModelAdmin):
+    list_display = ('name', 'active', 'position')
+    list_editable = ('active', 'position')
+    search_fields = ('name',)

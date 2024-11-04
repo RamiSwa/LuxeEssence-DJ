@@ -1,21 +1,107 @@
 {% extends "base.html" %}
-{% block title %}
-  My Blog
-{% endblock title %}
+{% load blog_tags %}
+{% load static %}
+{% block title %}Blog | LuxeEssence Clinic{% endblock title %}
 
 {% block content %}
-  <h1>My Blog</h1>
-  {% for post in posts %}
-    <h2>
-      <a href="{{ post.get_absolute_url }}">
-        {{ post.title }}
-      </a>
-    </h2>
-    <p class="date">
-      Published {{ post.publish }} by {{ post.author }}
-    </p>
-    {{ post.body|truncatewords:30|linebreaks }}
-  {% endfor %}
-  {% include "includes/pagination.html" with page=posts %}
+<section class="blog-section py-5">
+    <div class="container">
+        <h1 class="display-4 mb-4 text-center ">All Posts</h1>
+        <hr class="w-25 mx-auto p-3">
+      <div class="row">
+        <!-- Blog Posts Section -->
+        <div class="col-lg-9">
+          <div class="row">
+            <!-- Blog Post Card -->
+            {% for post in posts %}
+            <div class="col-md-4">
+              <div class="card h-100 border-0 shadow-sm">
+                <a class="blog-thumb zoom-in d-block overflow-hidden position-relative" href="{{ post.get_absolute_url }}">
+                  <img src="{{ post.featured_image.url }}" class="card-img-top" alt="{{ post.title }}">
+                  <div class="blog-date position-absolute text-white">
+                    <span class="bg-primary p-1 rounded">{{ post.publish }}</span>
+                  </div>
+                </a>
+                <div class="card-body text-center">
+                  <h5 class="card-title mt-2">
+                    <a class="text-dark font-weight-bold" href="{{ post.get_absolute_url }}">{{post.title}}</a>
+                  </h5>
+                  <p class="card-text text-muted small">
+                    {{ post.body|truncatewords:20|linebreaks }}
+                  </p>
+                </div>
+                <a class="btn btn-outline-primary btn-sm m-2" href="{{ post.get_absolute_url }}">Read More</a>
+
+              </div>
+            </div>
+
+            {% endfor %}
+            <!-- Repeat Blog Post Cards (with same format) -->
+
+  
+            <!-- Additional blog posts follow the same pattern... -->
+          </div>
+        <!-- Pagination Section -->
+        {% include "includes/pagination.html" with page=posts %}
+
+        </div>
+  
+        <!-- Sidebar Section -->
+        <div class="col-lg-3">
+          <aside class="blog-sidebar">
+            <!-- Search Widget -->
+            <div class="sidebar-widget mb-4">
+              <h5 class="widget-title">Search</h5>
+              <form action="{% url 'blog:blog_search' %}" method="get" class="position-relative">
+                <div class="position-relative">
+                    <input class="form-control rounded-pill pr-5" name="q" type="text" placeholder="Search blog..." value="{{ request.GET.q }}">
+                    <button class="btn search-btn position-absolute" type="submit" style="right: 10px; top: 50%; transform: translateY(-50%);">
+                      <i class="fas fa-search"></i> <!-- Font Awesome Solid Search Icon -->
+                    </button>
+                  </div>
+
+              </form>
+            </div>
+  
+            <!-- Categories Widget -->
+            <div class="sidebar-widget mb-4">
+              <h5 class="widget-title">Categories</h5>
+              <ul class="list-unstyled">
+                {% for category in categories %}
+                  <li><a href="{% url 'blog:blog_list_by_category' category.slug %}">{{ category.name }} ({{ category.post_count }})</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+  
+<!-- Recent Posts Widget -->
+<div class="sidebar-widget mb-4">
+    <h5 class="widget-title">Recent Posts</h5>
+    {% for recent_post in recent_posts %}
+      <div class="recent-post media mb-3">
+        <a href="{{ recent_post.get_absolute_url }}"><img src="{{ recent_post.featured_image.url }}" alt="{{ recent_post.title }}" class="mr-3 rounded" width="80"></a>
+        <div class="media-body">
+          <h6><a href="{{ recent_post.get_absolute_url }}">{{ recent_post.title }}</a></h6>
+          <span class="text-muted small">{{ recent_post.publish|date:"F d, Y" }}</span>
+        </div>
+      </div>
+    {% empty %}
+      <p>No recent posts found.</p>
+    {% endfor %}
+  </div>
+
+<!-- Tags Widget -->
+<div class="sidebar-widget">
+    <h5 class="widget-title">Tags</h5>
+    <div class="tag-cloud d-flex flex-wrap">
+      {% for tag in tags %}
+        <a href="{% url 'blog:blog_list_by_tag' tag.slug %}" class="border px-3 py-1 m-2">{{ tag.name }}</a>
+      {% endfor %}
+    </div>
+  </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
 {% endblock %}
 

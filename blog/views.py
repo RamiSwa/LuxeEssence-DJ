@@ -1,31 +1,64 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import BlogPost, Comment
+from .models import BlogPost, Comment, Category, Banner
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
 from .forms import EmailPostForm, CommentForm
-
+from taggit.models import Tag
+from django.contrib.postgres.search import (
+    SearchVector,
+    SearchQuery,
+    SearchRank
+)
+from django.db import models
+from django.db.models import Count
 
 # Create your views here.
 
 
 
+def blog_list(request, category_slug=None, tag_slug=None):
+    category = None
+    tag = None
 
-def blog_list(request):
-    posts = BlogPost.published.all()  # Get all published blog posts
-    paginator = Paginator(posts, 3)  # 3 posts per page
-    
-    page_number = request.GET.get('page', 1)  # Get page number from URL
 
-    try:
-        posts = paginator.page(page_number)  # Try fetching the correct page
-    except PageNotAnInteger:
-        # If the page number is not an integer (invalid input), show the first page.
-        posts = paginator.page(1)
-    except EmptyPage:
-        # If the page number is too high (e.g., no more pages), show the last page.
-        posts = paginator.page(paginator.num_pages)
     
-    return render(request, 'blog/blog-list.html', {'posts': posts})
+    # Get all categories with post count
+    categories = Category.objects.annotate(post_count=models.Count('posts'))
+
+    # Get all tags
+    tags = Tag.objects.all()[:5]
+
+    # Get all published posts
+    posts = BlogPost.published.all()
+
+    # Filter by category if category_slug is provided
+    if category_slug:
+        category = get_object_or_404(Category, slug=category_slug)
+        posts = posts.filter(category=category)
+
+    # Filter by tag if tag_slug is provided
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        posts = posts.filter(tags__in=[tag])
+
+    # Paginate posts
+    paginator = Paginator(posts, 3)  # Show 3 posts per page
+    page_number = request.GET.get('page')
+    posts = paginator.get_page(page_number)
+
+    # Get recent posts
+    recent_posts = BlogPost.published.order_by('-publish')[:3]  # Limit to 5 recent posts
+
+    return render(request, 'blog/blog-list.html', {
+        'posts': posts,
+        'categories': categories,
+        'tags': tags,
+        'recent_posts': recent_posts,
+        'selected_category': category,
+        'selected_tag': tag,
+        
+    })
+
 
 
 
@@ -40,9 +73,25 @@ def blog_detail(request, year, month, day, post):
         publish__day=day
     )
     
+        # Fetch active banners
+    banners = Banner.objects.filter(active=True)
+    
+    # Fetch categories and tags for sidebar
+    categories = Category.objects.all()
+    tags = Tag.objects.annotate(num_posts=Count('blogpost')).order_by('-num_posts')[:8]
+    
+    
     # Fetch all active comments and replies
     comments = post.comments.filter(active=True, parent__isnull=True)
+
+    # Fetch a limited number of most-used tags for the sidebar
+    tags = Tag.objects.annotate(num_posts=Count('blogpost')).order_by('-num_posts')[:8]
+
+    # Fetch similar posts, including categories
+    similar_posts = post.get_similar_posts()
+
     
+
     # Handle comment form submission
     new_comment = None
     if request.method == 'POST':
@@ -63,24 +112,15 @@ def blog_detail(request, year, month, day, post):
         comment_form = CommentForm()
     
     return render(request, 'blog/single-blog.html', {
-        'post': post,
-        'comments': comments,
+       'post': post,
+        'comments': post.comments.filter(active=True, parent__isnull=True),
         'comment_form': comment_form,
+        'similar_posts': similar_posts,
+        'categories': categories,
+        'tags': tags,
+        'banners': banners,
     })
 
-
-# def blog_detail(request, year, month, day, post):
-#     post = get_object_or_404(
-#         BlogPost, 
-#         status=BlogPost.Status.PUBLISHED,
-#         slug=post,
-#         publish__year=year,
-#         publish__month=month,
-#         publish__day=day
-#     )
-#     return render(
-#         request, 'blog/single-blog.html', {'post': post}
-#     )
     
     
 
@@ -124,3 +164,30 @@ def post_share(request, post_id):
             'sent': sent
         }
     )
+    
+    
+
+"""Building a search view"""
+
+
+
+
+def search(request):
+    query = request.GET.get('q')
+    results = []
+    
+    if query:
+        # Define a search vector with a weight for better ranking
+        search_vector = SearchVector('title', weight='A') + SearchVector('body', weight='B')
+        search_query = SearchQuery(query)
+
+        # Annotate the posts with a rank and filter for relevant results
+        results = (
+            BlogPost.published.annotate(rank=SearchRank(search_vector, search_query))
+            .filter(rank__gte=0.1)  # Adjust this threshold based on desired relevance
+            .order_by('-rank')
+        )
+    
+    return render(request, 'blog/search_results.html', {'query': query, 'results': results})
+
+

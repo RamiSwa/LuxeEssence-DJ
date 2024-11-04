@@ -2,6 +2,10 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django.db.models import Count, Q
+from taggit.managers import TaggableManager
+from ckeditor.fields import RichTextField
+
 
 
 class PublishedManager(models.Manager):
@@ -15,6 +19,7 @@ class Category(models.Model):
     """Model for blog post categories."""
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
+      
 
     class Meta:
         verbose_name_plural = 'Categories'
@@ -46,7 +51,7 @@ class BlogPost(models.Model):
         blank=True
     )
     featured_image = models.ImageField(upload_to='blog_images/', null=True, blank=True)
-    body = models.TextField()
+    body = RichTextField()  # Enables WYSIWYG editor in admin
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -57,7 +62,8 @@ class BlogPost(models.Model):
     meta_description = models.TextField(max_length=300, null=True, blank=True)
     excerpt = models.TextField(max_length=500, null=True, blank=True)
 
-
+    tags = TaggableManager()
+    
     # Managers
     objects = models.Manager()  # The default manager.
     published = PublishedManager()  # Custom manager to get published posts.
@@ -80,6 +86,18 @@ class BlogPost(models.Model):
                 self.publish.day,
                 self.slug]
 )
+        
+        
+    def get_similar_posts(self):
+        # Filter posts with similar tags or categories, excluding the current post
+        similar_posts = BlogPost.published.filter(
+            Q(tags__in=self.tags.all()) | Q(category=self.category)
+        ).exclude(id=self.id)
+
+        # Annotate with the count of shared tags and order by that count, limiting to 3 results
+        similar_posts = similar_posts.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[:3]
+        
+        return similar_posts
 
 
 
@@ -107,3 +125,19 @@ class Comment(models.Model):
     def is_reply(self):
         """Check if a comment is a reply to another comment."""
         return self.parent is not None
+    
+    
+# Create a Banner Model
+
+class Banner(models.Model):
+    name = models.CharField(max_length=100, help_text="Short description for internal reference")
+    image = models.ImageField(upload_to='banners/', help_text="Upload the banner image")
+    link = models.URLField(blank=True, null=True, help_text="URL to navigate to when banner is clicked")
+    active = models.BooleanField(default=True, help_text="Uncheck to hide the banner")
+    position = models.PositiveIntegerField(default=0, help_text="Order of display, lower numbers show first")
+
+    class Meta:
+        ordering = ['position']  # Order banners by position in sidebar
+
+    def __str__(self):
+        return self.name

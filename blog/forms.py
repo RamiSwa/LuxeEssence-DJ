@@ -20,3 +20,9 @@ class CommentForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Your Email'}),
             'body': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Comment'}),
         }
+
+
+
+
+
+
