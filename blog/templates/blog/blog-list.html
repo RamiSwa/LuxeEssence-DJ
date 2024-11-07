@@ -8,13 +8,13 @@
     <div class="container">
         <h1 class="display-4 mb-4 text-center ">All Posts</h1>
         <hr class="w-25 mx-auto p-3">
-      <div class="row">
+      <div class="row flex">
         <!-- Blog Posts Section -->
         <div class="col-lg-9">
-          <div class="row">
+          <div class="row flex">
             <!-- Blog Post Card -->
             {% for post in posts %}
-            <div class="col-md-4">
+            <div class="col-md-4 mb-5">
               <div class="card h-100 border-0 shadow-sm">
                 <a class="blog-thumb zoom-in d-block overflow-hidden position-relative" href="{{ post.get_absolute_url }}">
                   <img src="{{ post.featured_image.url }}" class="card-img-top" alt="{{ post.title }}">
@@ -27,7 +27,7 @@
                     <a class="text-dark font-weight-bold" href="{{ post.get_absolute_url }}">{{post.title}}</a>
                   </h5>
                   <p class="card-text text-muted small">
-                    {{ post.body|truncatewords:20|linebreaks }}
+                    {{ post.body|truncatewords:15|safe }}
                   </p>
                 </div>
                 <a class="btn btn-outline-primary btn-sm m-2" href="{{ post.get_absolute_url }}">Read More</a>
@@ -37,12 +37,15 @@
 
             {% endfor %}
             <!-- Repeat Blog Post Cards (with same format) -->
-
+ 
   
             <!-- Additional blog posts follow the same pattern... -->
           </div>
         <!-- Pagination Section -->
-        {% include "includes/pagination.html" with page=posts %}
+        {% if posts.paginator.num_pages > 1 %}
+        {% include "includes/pagination.html" %}
+    {% endif %}
+    
 
         </div>
   

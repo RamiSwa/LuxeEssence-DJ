@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.db.models import Count, Q
 from taggit.managers import TaggableManager
 from ckeditor.fields import RichTextField
+from django.utils.text import slugify
 
 
 
@@ -50,7 +51,7 @@ class BlogPost(models.Model):
         null=True, 
         blank=True
     )
-    featured_image = models.ImageField(upload_to='blog_images/', null=True, blank=True)
+    featured_image = models.ImageField(upload_to='blog_images/')
     body = RichTextField()  # Enables WYSIWYG editor in admin
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
@@ -77,15 +78,21 @@ class BlogPost(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse(
-        'blog:blog_detail',
-        args=[self.publish.year,
+            'blog:blog_detail',
+            args=[self.publish.year,
                 self.publish.month,
                 self.publish.day,
                 self.slug]
-)
+        )
+
         
         
     def get_similar_posts(self):
@@ -141,3 +148,5 @@ class Banner(models.Model):
 
     def __str__(self):
         return self.name
+
+

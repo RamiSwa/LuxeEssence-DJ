@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'taggit',
     
     'blog.apps.BlogConfig',
+    'accounts.apps.AccountsConfig',
+
 
 
     
@@ -100,6 +102,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 
 # Database
