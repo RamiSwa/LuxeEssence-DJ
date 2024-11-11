@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load blog_tags %}
+{% load static %}
+{% block title %}Shop | LuxeEssence Clinic{% endblock title %}
+
+
+{% block content %}
+
+<div class="product-tab m-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-9">
+          <!-- Grid/List View Toggle -->
+          <div class="grid-nav-wraper bg-light p-3 rounded">
+            <div class="row align-items-center">
+              <div class="col-12 col-md-6 mb-3 mb-md-0">
+                <nav class="shop-grid-nav">
+                  <ul class="nav nav-pills align-items-center" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">
+                        <i class="fa fa-th"></i>
+                      </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">
+                        <i class="fa fa-list"></i>
+                      </a>
+                    </li>
+                    <li>
+                      <span class="total-products text-capitalize">There are {{ products.count }} products.</span>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+  
+              <!-- Custom dropdown for sorting -->
+              <div class="col-12 col-md-6 position-relative">
+                <div class="shop-grid-button d-flex align-items-center">
+                  <span class="sort-by mt-1">Sort by:</span>
+                  <div class="dropdown ms-2">
+                    <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                      Select Sorting
+                    </button>
+                    <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                      <li><a class="dropdown-item" href="?sort=price_asc">Price: Low to High</a></li>
+                      <li><a class="dropdown-item" href="?sort=price_desc">Price: High to Low</a></li>
+                      <li><a class="dropdown-item" href="?sort=best_selling">Best Selling</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- product-tab-nav end -->
+  
+          <!-- Tab Content -->
+          <div class="tab-content m-5" id="pills-tabContent">
+            <!-- Grid View -->
+            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+              <div class="row grid-view">
+                {% for product in products %}
+                <div class="col-sm-6 col-md-4 col-lg-4 mb-4">
+                  <div class="card product-card border-0 shadow-sm rounded">
+                    <div class="card-body">
+                      <div class="product-thumbnail position-relative">
+                        <a href="{% url 'shop:product_detail' product.slug %}">
+                          <img class="first-img img-fluid rounded" src="{{ product.image.url }}" alt="{{ product.name }}">
+                        </a>
+                        <ul class="actions d-flex justify-content-center">
+                          <li><a class="action" href="#"><span class="icon-heart"></span></a></li>
+                          <li><a class="action" href="#"><span class="icon-shuffle"></span></a></li>
+                          <li><a class="action" href="#"><span class="icon-magnifier"></span></a></li>
+                        </ul>
+                      </div>
+                      <div class="product-desc py-0 m-3">
+                        <h3 class="title"><a href="{% url 'shop:product_detail' product.slug %}">{{ product.name }}</a></h3>
+                        <div class="star-rating">
+
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                          <span class="product-price">${{ product.price }}</span>
+                          <button class="pro-btn m-3" data-bs-toggle="modal" data-bs-target="#add-to-cart">
+                            <i class="fas fa-shopping-basket"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+  
+            <!-- List View -->
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+              <div class="list-view">
+                {% for product in products %}
+                <div class="row mb-4 p-3 bg-white shadow-sm rounded">
+                  <div class="col-md-3 product-image">
+                    <a href="{% url 'shop:product_detail' product.slug %}">
+                      <img class="img-fluid rounded" src="{{ product.image.url }}" alt="{{ product.name }}">
+                    </a>
+                  </div>
+                  <div class="col-md-9">
+                    <h3 class="title"><a href="{% url 'shop:product_detail' product.slug %}">{{ product.name }}</a></h3>
+                    <div class="star-rating mb-2">
+                        <div class="star-rating">
+                            {% for star in "★★★★★" %}
+                              <span class="{% if forloop.counter <= product.rating %}fas{% else %}far{% endif %} fa-star"></span>
+                            {% endfor %}
+                          </div>
+                          
+                      
+                    </div>
+                    <p class="product-description mb-3">{{ product.description|truncatewords:20 }}</p>
+                    <div class="d-flex align-items-center justify-content-between">
+                      <span class="product-price">${{ product.price }}</span>
+                      <button class="pro-btn btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-to-cart">
+                        <i class="fas fa-shopping-basket"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-lg-3 order-lg-first p-2">
+          <aside class="left-sidebar">
+            <div class="search-filter">
+              <div class="sidbar-widget pt-0">
+                <h4 class="title">Categories</h4>
+                <ul id="offcanvas-menu2" class="blog-ctry-menu">
+                  {% for category in categories %}
+                  <li>
+                    <a href="{% url 'shop:category' category.slug %}">{{ category.name }}</a>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+  
+            <!-- Sidebar Filters and Additional Content as previously outlined -->
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+{% endblock %}

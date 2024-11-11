@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ product.name }} | LuxeEssence Clinic{% endblock title %}
+
+{% block content %}
+
+<!-- Product Display Start -->
+<div class="product-display py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Product Image -->
+            <div class="col-lg-6 mb-4">
+                <div class="product-image text-center">
+                    <img class="img-fluid rounded" 
+                    src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" 
+                    alt="{{ product.name }}">
+               
+                </div>
+            </div>
+
+            <!-- Product Details -->
+            <div class="col-lg-6">
+                <div class="product-details">
+                    <h2 class="mb-3">{{ product.name }}</h2>
+                    <p class="lead">{{ product.description }}</p>
+                    <p class="text-muted">Price: ${{ product.price }}</p>
+
+                    <!-- Add to Cart Button (if applicable) -->
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-primary">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Product Display End -->
+
+<!-- Product Tab Start -->
+<div class="product-tab py-5">
+    <div class="container">
+        <!-- Product Tab Navigation -->
+        <div class="product-tab-nav">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="product-tab-menu single-product">
+                        <ul class="nav nav-pills justify-content-center" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">
+                                    Description
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="pills-details-tab" data-bs-toggle="pill" href="#pills-details" role="tab" aria-controls="pills-details" aria-selected="false">
+                                    Product Details
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="pills-reviews-tab" data-bs-toggle="pill" href="#pills-reviews" role="tab" aria-controls="pills-reviews" aria-selected="false">
+                                    Reviews
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- Product Tab Navigation End -->
+
+        <!-- Tab Content -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="tab-content" id="pills-tabContent">
+                    <!-- Description Tab -->
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <div class="single-product-desc px-3">
+                            <p>{{ product.long_description }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Product Details Tab -->
+                    <div class="tab-pane fade" id="pills-details" role="tabpanel" aria-labelledby="pills-details-tab">
+                        <div class="single-product-desc px-3">
+                            <ul class="product-details-list">
+                                <li><strong>Weight:</strong> {{ product.weight }} g</li>
+                                <li><strong>Dimensions:</strong> {{ product.dimensions }}</li>
+                                <li><strong>Materials:</strong> {{ product.materials }}</li>
+                                <li><strong>Other Info:</strong> {{ product.other_info }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Reviews Tab -->
+                    <div class="tab-pane fade" id="pills-reviews" role="tabpanel" aria-labelledby="pills-reviews-tab">
+                        <div class="single-product-desc">
+                            <div class="row">
+                                <!-- Review List -->
+                                <div class="col-lg-7 mb-4">
+                                    <div class="review-wrapper">
+                                        {% for review in product.reviews.all %}
+                                        <div class="single-review d-flex mb-4">
+                                            <div class="review-img me-3">
+                                                <img class="rounded-circle" 
+                                                src="{% if review.user.profile_image %}{{ review.user.profile_image.url }}{% else %}{% static 'images/placeholder-profile.png' %}{% endif %}" 
+                                                alt="Review by {{ review.user.username }}" 
+                                                style="width: 60px; height: 60px;">                                           
+                                            </div>
+                                            <div class="review-content">
+                                                <h5 class="mb-1">{{ review.user.name }}</h5>
+                                                <div class="star-rating mb-2">
+                                                    <div class="star-rating">
+                                                        {% for star in "★★★★★" %}
+                                                          <span class="{% if forloop.counter <= product.rating %}fas{% else %}far{% endif %} fa-star"></span>
+                                                        {% endfor %}
+                                                      </div>
+                                                      
+                                                </div>
+                                                <p>{{ review.comment }}</p>
+                                            </div>
+                                        </div>
+                                        {% empty %}
+                                        <p>No reviews yet.</p>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <!-- Review Form -->
+                                <div class="col-lg-5">
+                                    <div class="review-form-wrapper">
+                                        <h4>Add a Review</h4>
+                                        <form method="post" action="">
+                                            {% csrf_token %}
+                                            <div class="star-box mb-3">
+                                                <div class="star-rating">
+                                                    <span class="far fa-star"></span>
+                                                    <span class="far fa-star"></span>
+                                                    <span class="far fa-star"></span>
+                                                    <span class="far fa-star"></span>
+                                                    <span class="far fa-star"></span>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <input type="text" class="form-control" name="name" placeholder="Name" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <input type="email" class="form-control" name="email" placeholder="Email" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <textarea class="form-control" name="comment" rows="4" placeholder="Your Review" required></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary w-100">Submit</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Product Tab End -->
+
+<!-- Related Products Start -->
+<div class="related-products py-5">
+    <div class="container">
+        <h4 class="text-center mb-4">Related Products</h4>
+        <div class="row">
+            {% for related_product in related_products %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="product-card text-center">
+                    <a href="{% url 'shop:product_detail' related_product.slug %}">
+                        <img class="img-fluid rounded" 
+                        src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" 
+                        alt="{{ product.name }}">                   
+                    </a>
+                    <h5 class="mt-2">{{ related_product.name }}</h5>
+                    <p class="text-muted">${{ related_product.price }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- Related Products End -->
+
+{% endblock %}
