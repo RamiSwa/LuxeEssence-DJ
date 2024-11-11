@@ -60,14 +60,19 @@
             <li class="nav-item ">
               <a class="nav-link" href="cart.html"><i class="fas fa-shopping-cart"></i></a>
             </li>
+            {% if user.is_authenticated %}
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="#"><i class="fas fa-user"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                <li><a class="dropdown-item" href="login.html">Login</a></li>
-                <li><a class="dropdown-item" href="logout.html">Logout</a></li>
-                <li><a class="dropdown-item" href="dashboard.html">Dashboard</a></li>
+                <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="#"><i class="fas fa-user"></i> {{ user.username }}</a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                    <li><a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                 </ul>
             </li>
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}"><i class="fas fa-user"></i> Login</a>
+            </li>
+        {% endif %}
           </ul>
         </div>
       </div>
@@ -108,7 +113,7 @@
               <a class="nav-link" href="contact.html">Contact</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="blog.html">Blog</a>
+              <a class="nav-link" href="{% url 'blog:blog_list' %}">Blog</a>
             </li>
           </ul>
   
@@ -121,7 +126,17 @@
     </nav>
   </header>
   
-  
+<!-- User Messages (Flash Messages) -->
+{% if messages %}
+  <div class="container mt-3">
+      {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+      {% endfor %}
+  </div>
+{% endif %}
   
   <section id="hero" class="hero-section pt-6">
     <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -198,8 +213,8 @@
       <div class="col-6 col-md-3 col-lg-2 mb-4">
         <h5 class="text-uppercase">Account</h5>
         <ul class="footer-menu list-unstyled">
-          <li><a href="login.html" class="text-light">Login-Register</a></li>
-          <li><a href="dashboard.html" class="text-light">My Account</a></li>
+          <li><a href="{% url 'register' %}" class="text-light">Register</a></li>
+          <li><a href="{% url 'dashboard' %}" class="text-light">My Account</a></li>
           <li><a href="booking.html" class="text-light">Make An Appointment</a></li>
 
         </ul>

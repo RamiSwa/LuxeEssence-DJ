@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="resend-verification py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="resend-verification-wrapper shadow-lg p-5 bg-white rounded">
+                    <h2 class="text-center mb-4">Resend Verification Link</h2>
+                    <form action="{% url 'resend_verification_link' %}" method="post">
+                        {% csrf_token %}
+                        
+                        <div class="form-group mb-3">
+                            <input type="email" class="form-control form-control-lg" name="email" placeholder="Enter your email" required>
+                            {% if form.email.errors %}
+                                <div class="invalid-feedback d-block">{{ form.email.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Resend Verification Link</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

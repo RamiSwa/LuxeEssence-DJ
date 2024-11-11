@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="email-verification-success py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="email-verification-wrapper shadow-lg p-5 bg-white rounded">
+                    <h2 class="text-center mb-4">Email Verified Successfully</h2>
+                    <p>Your email has been successfully verified! You can now log in to your account.</p>
+                    <div class="d-grid">
+                        <a href="{% url 'login' %}" class="btn btn-primary btn-lg">Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
