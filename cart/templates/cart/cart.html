@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Shop | LuxeEssence Clinic{% endblock title %}
+
+{% block content %}
+
+<section class="cart-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <h3 class="title text-capitalize">Your Cart Items</h3>
+            </div>
+            <div class="col-12">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center">Product Image</th>
+                                <th class="text-center">Product Name</th>
+                                <th class="text-center">Stock Status</th>
+                                <th class="text-center">Qty</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart %}
+                            <tr>
+                                <td class="text-center">
+                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-fluid" style="width: 80px;">
+                                </td>
+                                <td class="text-center">{{ item.product.name }}</td>
+                                <td class="text-center">
+                                    <span>In Stock</span> <!-- Modify if you track stock status -->
+                                </td>
+                                <td class="text-center">
+                                    <form action="{% url 'cart:cart_add' item.product.id %}" method="post" class="d-inline">
+                                        {% csrf_token %}
+                                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="10" class="form-control d-inline w-50 text-center">
+                                        <input type="hidden" name="override" value="True">
+                                        <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                                    </form>
+                                </td>
+                                <td class="text-center">${{ item.total_price }}</td>
+                                <td class="text-center">
+                                    <form action="{% url 'cart:cart_remove' item.product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-danger">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Checkout & Recommended Products Section -->
+<div class="checkout-section py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Recommended Products Section -->
+            <div class="col-lg-7 col-md-12 mb-4">
+                <div class="recommended-products p-4 rounded shadow-sm">
+                    <h3 class="title mb-4">You May Also Like</h3>
+                    <div class="row g-3">
+                        <!-- Example recommended products -->
+                        <div class="col-md-4">
+                            <div class="product-card text-center">
+                                <img src="{% static 'images/shop/vitamin-C-serum-bottle.png' %}" class="img-fluid mb-3" alt="Product 1">
+                                <h5 class="product-name">Face Serum</h5>
+                                <span class="price">$45.00</span>
+                                <a href="#" class="btn btn-dark btn-sm mt-2">Add to Cart</a>
+                            </div>
+                        </div>
+                        <!-- Repeat additional recommended products here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary with Discount Coupon -->
+            <div class="col-lg-5 col-md-12">
+                <div class="order-summary p-4 bg-light rounded shadow-sm">
+                    <h3 class="title mb-4">Your Order</h3>
+                    <ul class="list-group list-group-flush">
+                        {% for item in cart %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>{{ item.product.name }} x {{ item.quantity }}</span>
+                            <span>${{ item.total_price }}</span>
+                        </li>
+                        {% endfor %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Shipping</span>
+                            <span>Free Shipping</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between fw-bold">
+                            <span>Order Total</span>
+                            <span>${{ total_price }}</span>
+                        </li>
+                    </ul>
+
+                    <!-- Discount Coupon Section -->
+                    <div class="m-4">
+                        <h4 class="mb-3">Apply Discount Coupon</h4>
+                        <form action="{% url 'cart:apply_coupon' %}" method="post" class="row g-3">
+                            {% csrf_token %}
+                            <div class="col-md-8">
+                                <input type="text" name="coupon_code" placeholder="Enter Coupon Code" class="form-control">
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary w-100">Apply</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="mt-4 d-flex flex-column">
+                        <a href="{% url 'cart:cart_detail' %}" class="btn btn-primary btn-lg mb-3">Update Cart</a>
+                        <a class="btn btn-success btn-lg" href="{% url 'cart:checkout' %}">Proceed to Checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

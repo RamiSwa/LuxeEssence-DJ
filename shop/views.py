@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Category, Product
 from django.contrib import messages
+from cart.cart import Cart
 
 def shop_view(request):
     """
@@ -44,3 +45,18 @@ def category_view(request, slug):
         'products': products,
     }
     return render(request, 'shop/shop.html', context)
+
+
+def add_to_cart(request, slug):
+    """
+    View to add a specific product to the cart.
+    """
+    product = get_object_or_404(Product, slug=slug, is_active=True)
+    cart = Cart(request)
+    
+    if request.method == 'POST':
+        quantity = int(request.POST.get('quantity', 1))
+        cart.add(product=product, quantity=quantity)
+        messages.success(request, f'Added {product.name} to your cart.')
+        return redirect('cart:cart_detail')  # Redirect to the cart detail page
+    return redirect('shop:product_detail', slug=slug)

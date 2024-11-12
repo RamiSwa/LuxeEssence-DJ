@@ -24,11 +24,16 @@
                     <h2 class="mb-3">{{ product.name }}</h2>
                     <p class="lead">{{ product.description }}</p>
                     <p class="text-muted">Price: ${{ product.price }}</p>
-
-                    <!-- Add to Cart Button (if applicable) -->
-                    <div class="mt-4">
-                        <button type="button" class="btn btn-primary">Add to Cart</button>
-                    </div>
+            
+                    <!-- Add to Cart Form -->
+                    <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="d-flex align-items-center">
+                            <label for="quantity" class="me-2">Quantity:</label>
+                            <input type="number" id="quantity" name="quantity" value="1" min="1" class="form-control w-25 me-3">
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
